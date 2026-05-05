@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('taskes', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-             $table->foreignId('project_id')->constrained()->onDelete('cascade');
-    $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
 
-    $table->string('title');
+            $table->string('title');
     $table->text('description');
 
     $table->enum('status', ['todo', 'in_progress', 'done']);
