@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('taskes', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('project_id')->constrained()->onDelete('cascade');
-    $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
 
-    $table->string('title');
+        Schema::create('tasks', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+
+            $table->string('title');
     $table->text('description');
 
     $table->enum('status', ['todo', 'in_progress', 'done']);
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('taskes');
+        Schema::dropIfExists('tasks');
     }
 };
