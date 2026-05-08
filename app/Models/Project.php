@@ -14,11 +14,10 @@ class Project extends Model
        'description',
        'deadline'
       ];
-      public function users(){
-        return $this->belongsToMany(User::class)
-        ->withPivot('role')
-        ->withTimestamp(); 
-
+      public function users()
+      {
+        return $this->belongsToMany(User::class, 'user_project')
+            ->withPivot('role');
       }
       public function tasks(){
         return $this->hasMany(Task::class);
