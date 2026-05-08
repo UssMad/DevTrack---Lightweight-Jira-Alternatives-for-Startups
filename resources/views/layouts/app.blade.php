@@ -14,23 +14,60 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+     <body class="font-sans antialiased">
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+<div class="flex min-h-screen bg-gray-100">
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
-    </body>
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 text-white p-5">
+
+        <h1 class="text-2xl font-bold mb-8">
+            DevTrack
+        </h1>
+
+        <ul class="space-y-4">
+
+            <li>
+                <a href="{{ route('projects.index') }}"
+                   class="hover:text-blue-400">
+                    📁 Projects
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('projects.archives') }}"
+                   class="hover:text-blue-400">
+                    📦 Archives
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1">
+
+        <!-- Top Navigation -->
+        @include('layouts.navigation')
+
+        <!-- Header -->
+        @isset($header)
+            <header class="bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </header>
+        @endisset
+
+        <!-- Page Content -->
+        <main class="p-6">
+            {{ $slot }}
+        </main>
+
+    </div>
+
+</div>
+
+</body>
 </html>

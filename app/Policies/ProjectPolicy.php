@@ -36,12 +36,14 @@ return $project->users()
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Project $project): bool
-    {
- return $project->users()
-            ->where('user_id', $user->id)
-            ->where('role', 'lead')
-            ->exists();    }
+   public function update(User $user, Project $project): bool
+{
+    return $project->users()
+        ->where('users.id', $user->id)
+        ->wherePivot('role', 'lead')
+        ->exists();
+}
+
 
     /**
      * Determine whether the user can delete the model.
