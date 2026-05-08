@@ -1,201 +1,225 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                🗂️ {{ __('My Tasks') }}
-            </h2>
-            @can('create', App\Models\Task::class)
-                <a href="{{ route('tasks.create') }}"
-                   class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-indigo-700 transition duration-150">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    New Task
-                </a>
-            @endcan
+    {{-- Sprint Header --}}
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-on-surface text-[24px]">view_kanban</span>
+            <h1 class="text-h1 text-on-surface font-bold">Tasks</h1>
         </div>
-    </x-slot>
+        <div class="flex items-center gap-3">
+            {{-- Filter Tabs --}}
+            <div class="flex items-center gap-2">
+                <a href="{{ route('tasks.index') }}"
+                   class="px-3 py-1.5 rounded-lg text-body-md transition-colors {{ !request('status') ? 'bg-secondary-container/20 text-dt-primary border border-dt-primary/20' : 'bg-surface-container hover:bg-surface-container-high text-on-surface-variant border border-outline-variant/30' }}">
+                    All
+                </a>
+                <a href="{{ route('tasks.index', ['status' => 'todo']) }}"
+                   class="px-3 py-1.5 rounded-lg text-body-md transition-colors {{ request('status') === 'todo' ? 'bg-secondary-container/20 text-dt-primary border border-dt-primary/20' : 'bg-surface-container hover:bg-surface-container-high text-on-surface-variant border border-outline-variant/30' }}">
+                    Todo
+                </a>
+                <a href="{{ route('tasks.index', ['status' => 'in_progress']) }}"
+                   class="px-3 py-1.5 rounded-lg text-body-md transition-colors {{ request('status') === 'in_progress' ? 'bg-secondary-container/20 text-dt-primary border border-dt-primary/20' : 'bg-surface-container hover:bg-surface-container-high text-on-surface-variant border border-outline-variant/30' }}">
+                    In Progress
+                </a>
+                <a href="{{ route('tasks.index', ['status' => 'done']) }}"
+                   class="px-3 py-1.5 rounded-lg text-body-md transition-colors {{ request('status') === 'done' ? 'bg-secondary-container/20 text-dt-primary border border-dt-primary/20' : 'bg-surface-container hover:bg-surface-container-high text-on-surface-variant border border-outline-variant/30' }}">
+                    Done
+                </a>
+            </div>
 
-    <div class="py-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div class="hidden sm:block w-px h-8 bg-outline-variant/30"></div>
 
-            {{-- Flash Messages --}}
-            @if(session('success'))
-                <div class="flex items-center gap-3 p-4 bg-green-50 border border-green-200 text-green-800 rounded-xl shadow-sm">
-                    <svg class="w-5 h-5 text-green-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                    </svg>
-                    <span class="text-sm font-medium">{{ session('success') }}</span>
-                </div>
-            @endif
+            <button class="bg-surface-container-high border border-outline-variant/30 text-on-surface px-3 py-1.5 rounded-lg text-body-md hover:bg-surface-container-highest transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">filter_list</span> Filter
+            </button>
 
-            {{-- Filters (leads only) --}}
-            @can('create', App\Models\Task::class)
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-                    <form method="GET" action="{{ route('tasks.index') }}" class="flex flex-wrap gap-4 items-end">
-                        <div class="flex-1 min-w-[180px]">
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Project</label>
-                            <select name="project" id="filter-project"
-                                    class="w-full rounded-lg border-gray-200 text-sm shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                <option value="">All Projects</option>
-                                @foreach($projects as $project)
-                                    <option value="{{ $project->id }}" {{ request('project') == $project->id ? 'selected' : '' }}>
-                                        {{ $project->title }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="flex-1 min-w-[160px]">
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Status</label>
-                            <select name="status" id="filter-status"
-                                    class="w-full rounded-lg border-gray-200 text-sm shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                <option value="">All Statuses</option>
-                                <option value="todo"        {{ request('status') === 'todo'        ? 'selected' : '' }}>To Do</option>
-                                <option value="in_progress" {{ request('status') === 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                                <option value="done"        {{ request('status') === 'done'        ? 'selected' : '' }}>Done</option>
-                            </select>
-                        </div>
-                        <div class="flex gap-2">
-                            <button type="submit"
-                                    class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition duration-150 shadow-sm">
-                                Filter
-                            </button>
-                            @if(request()->hasAny(['project','status']))
-                                <a href="{{ route('tasks.index') }}"
-                                   class="px-4 py-2 bg-gray-100 text-gray-600 text-sm font-semibold rounded-lg hover:bg-gray-200 transition duration-150">
-                                    Clear
-                                </a>
-                            @endif
-                        </div>
-                    </form>
-                </div>
+            @can('create', \App\Models\Task::class)
+            <a href="{{ route('tasks.create') }}"
+               class="btn-primary-gradient text-white px-4 py-1.5 rounded-lg text-body-md font-semibold flex items-center gap-1.5 hover:opacity-90 transition-opacity shrink-0">
+                <span class="material-symbols-outlined text-[18px]">add</span> Task
+            </a>
             @endcan
-
-            {{-- Task Grid --}}
-            @if($tasks->isEmpty())
-                <div class="flex flex-col items-center justify-center py-20 text-center">
-                    <div class="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mb-4">
-                        <svg class="w-10 h-10 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-700 mb-1">No tasks found</h3>
-                    <p class="text-sm text-gray-400">
-                        @can('create', App\Models\Task::class)
-                            Get started by creating your first task.
-                        @else
-                            No tasks have been assigned to you yet.
-                        @endcan
-                    </p>
-                </div>
-            @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                    @foreach($tasks as $task)
-                        @php
-                            $statusConfig = match($task->status) {
-                                'todo'        => ['label' => 'To Do',       'bg' => 'bg-gray-100',  'text' => 'text-gray-600',  'dot' => 'bg-gray-400'],
-                                'in_progress' => ['label' => 'In Progress', 'bg' => 'bg-amber-100', 'text' => 'text-amber-700', 'dot' => 'bg-amber-500'],
-                                'done'        => ['label' => 'Done',        'bg' => 'bg-green-100', 'text' => 'text-green-700', 'dot' => 'bg-green-500'],
-                                default       => ['label' => $task->status, 'bg' => 'bg-gray-100',  'text' => 'text-gray-600',  'dot' => 'bg-gray-400'],
-                            };
-                            $priorityConfig = match($task->priority) {
-                                'low'    => ['label' => 'Low',    'bg' => 'bg-green-100', 'text' => 'text-green-700', 'icon' => '🟢'],
-                                'medium' => ['label' => 'Medium', 'bg' => 'bg-amber-100', 'text' => 'text-amber-700', 'icon' => '🟡'],
-                                'high'   => ['label' => 'High',   'bg' => 'bg-red-100',   'text' => 'text-red-700',   'icon' => '🔴'],
-                                default  => ['label' => '—',      'bg' => 'bg-gray-100',  'text' => 'text-gray-500',  'icon' => ''],
-                            };
-                            $isOverdue = $task->deadline && $task->deadline->isPast() && $task->status !== 'done';
-                        @endphp
-
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
-                            {{-- Top colour bar by priority --}}
-                            <div class="h-1 rounded-t-2xl
-                                {{ $task->priority === 'high'   ? 'bg-red-400' :
-                                   ($task->priority === 'medium' ? 'bg-amber-400' : 'bg-green-400') }}">
-                            </div>
-
-                            <div class="p-5 flex-1">
-                                {{-- Status + Priority badges --}}
-                                <div class="flex items-center justify-between mb-3 flex-wrap gap-1">
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold {{ $statusConfig['bg'] }} {{ $statusConfig['text'] }}">
-                                        <span class="w-1.5 h-1.5 rounded-full {{ $statusConfig['dot'] }}"></span>
-                                        {{ $statusConfig['label'] }}
-                                    </span>
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold {{ $priorityConfig['bg'] }} {{ $priorityConfig['text'] }}">
-                                        {{ $priorityConfig['icon'] }} {{ $priorityConfig['label'] }}
-                                    </span>
-                                </div>
-
-                                {{-- Project --}}
-                                @if($task->project)
-                                    <p class="text-xs text-indigo-500 font-semibold mb-1 truncate">
-                                        📁 {{ $task->project->title }}
-                                    </p>
-                                @endif
-
-                                {{-- Title --}}
-                                <h3 class="font-semibold text-gray-800 text-base leading-snug mb-2 line-clamp-2">
-                                    {{ $task->title }}
-                                </h3>
-
-                                {{-- Description --}}
-                                @if($task->description)
-                                    <p class="text-sm text-gray-500 line-clamp-2 mb-3">{{ $task->description }}</p>
-                                @endif
-
-                                {{-- Deadline + Assignee --}}
-                                <div class="flex items-center justify-between mt-auto pt-2">
-                                    {{-- Deadline --}}
-                                    @if($task->deadline)
-                                        <span class="text-xs font-medium {{ $isOverdue ? 'text-red-500' : 'text-gray-400' }}">
-                                            📅 {{ $task->deadline->format('d M Y') }}
-                                            @if($isOverdue) <span class="font-bold">⚠</span> @endif
-                                        </span>
-                                    @else
-                                        <span></span>
-                                    @endif
-
-                                    {{-- Assignee avatar --}}
-                                    @if($task->user)
-                                        <div class="flex items-center gap-1.5">
-                                            <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 text-xs font-bold">
-                                                {{ strtoupper(substr($task->user->name, 0, 1)) }}
-                                            </div>
-                                            <span class="text-xs text-gray-500 hidden sm:inline">{{ $task->user->name }}</span>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-
-                            {{-- Card Footer --}}
-                            <div class="px-5 py-3 border-t border-gray-50 flex items-center justify-between gap-2">
-                                <a href="{{ route('tasks.show', $task) }}"
-                                   class="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition">
-                                    View details →
-                                </a>
-                                <div class="flex items-center gap-3">
-                                    @can('update', $task)
-                                        <a href="{{ route('tasks.edit', $task) }}"
-                                           class="text-xs text-gray-400 hover:text-indigo-600 transition font-medium">Edit</a>
-                                    @endcan
-                                    @can('delete', $task)
-                                        <form method="POST" action="{{ route('tasks.destroy', $task) }}"
-                                              onsubmit="return confirm('Delete this task?')">
-                                            @csrf @method('DELETE')
-                                            <button type="submit"
-                                                    class="text-xs text-gray-400 hover:text-red-500 transition font-medium">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    @endcan
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-
         </div>
     </div>
+
+    {{-- Kanban Board --}}
+    @php
+        $todoTasks = $tasks->where('status', 'todo');
+        $inProgressTasks = $tasks->where('status', 'in_progress');
+        $doneTasks = $tasks->where('status', 'done');
+
+        // Apply filter
+        if(request('status') === 'todo') { $inProgressTasks = collect(); $doneTasks = collect(); }
+        if(request('status') === 'in_progress') { $todoTasks = collect(); $doneTasks = collect(); }
+        if(request('status') === 'done') { $todoTasks = collect(); $inProgressTasks = collect(); }
+    @endphp
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {{-- TODO Column --}}
+        <div class="flex flex-col">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-outline"></div>
+                    <h3 class="text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">Todo</h3>
+                    <span class="bg-surface-container-high text-on-surface-variant font-mono text-[11px] px-2 py-0.5 rounded-full">{{ $todoTasks->count() }}</span>
+                </div>
+                <button class="text-on-surface-variant hover:text-on-surface p-1 rounded transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">more_horiz</span>
+                </button>
+            </div>
+            <div class="space-y-3 min-h-[200px]">
+                @foreach($todoTasks as $task)
+                    <a href="{{ route('tasks.show', $task) }}" class="glass-card rounded-xl p-4 block hover:border-outline-variant/60 transition-colors group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-mono text-code text-outline-variant group-hover:text-dt-primary transition-colors">DEV-{{ str_pad($task->id, 4, '0', STR_PAD_LEFT) }}</span>
+                            <div class="flex items-center gap-1">
+                                @if($task->priority === 'high')
+                                    <span class="material-symbols-outlined text-dt-error text-[16px]" title="High Priority">keyboard_double_arrow_up</span>
+                                @elseif($task->priority === 'medium')
+                                    <span class="material-symbols-outlined text-dt-secondary text-[16px]" title="Medium Priority">keyboard_arrow_up</span>
+                                @endif
+                            </div>
+                        </div>
+                        <h4 class="text-body-md text-on-surface mb-3 leading-snug">{{ $task->title }}</h4>
+                        <div class="flex items-center justify-between mt-auto pt-2 border-t border-outline-variant/10">
+                            @if($task->deadline)
+                            <div class="flex items-center gap-1 text-outline text-label-sm">
+                                <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                                <span>{{ $task->deadline->format('M d') }}</span>
+                            </div>
+                            @else
+                                <div></div>
+                            @endif
+                            @if($task->user)
+                                <div class="w-6 h-6 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center text-[10px] font-bold text-on-surface" title="{{ $task->user->name }}">
+                                    {{ strtoupper(substr($task->user->name, 0, 1)) }}
+                                </div>
+                            @endif
+                        </div>
+                    </a>
+                @endforeach
+                {{-- Add Task Button --}}
+                @can('create', \App\Models\Task::class)
+                <a href="{{ route('tasks.create') }}?status=todo" class="flex items-center justify-center gap-1 p-3 border border-dashed border-outline-variant/30 rounded-xl text-on-surface-variant/50 hover:text-on-surface-variant hover:border-outline-variant/50 transition-colors text-body-md">
+                    <span class="material-symbols-outlined text-[18px]">add</span> Add Task
+                </a>
+                @endcan
+            </div>
+        </div>
+
+        {{-- IN PROGRESS Column --}}
+        <div class="flex flex-col">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-secondary-container"></div>
+                    <h3 class="text-label-sm uppercase tracking-wider text-dt-primary font-semibold">In Progress</h3>
+                    <span class="bg-secondary-container/20 text-dt-primary font-mono text-[11px] px-2 py-0.5 rounded-full">{{ $inProgressTasks->count() }}</span>
+                </div>
+                <button class="text-on-surface-variant hover:text-on-surface p-1 rounded transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">more_horiz</span>
+                </button>
+            </div>
+            <div class="space-y-3 min-h-[200px]">
+                @foreach($inProgressTasks as $task)
+                    <a href="{{ route('tasks.show', $task) }}" class="glass-card rounded-xl p-4 block border-secondary-container/50 bg-secondary-container/5 hover:border-secondary-container transition-colors group relative overflow-hidden">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary-container to-secondary-container"></div>
+                        <div class="pl-2">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="font-mono text-code text-dt-primary">DEV-{{ str_pad($task->id, 4, '0', STR_PAD_LEFT) }}</span>
+                                <div class="flex items-center gap-1">
+                                    @if($task->priority === 'high')
+                                        <span class="material-symbols-outlined text-dt-error text-[16px]">keyboard_double_arrow_up</span>
+                                        <span class="material-symbols-outlined text-dt-error text-[16px]">error</span>
+                                    @elseif($task->priority === 'medium')
+                                        <span class="material-symbols-outlined text-dt-secondary text-[16px]">keyboard_arrow_up</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <h4 class="text-body-md text-on-surface mb-3 leading-snug">{{ $task->title }}</h4>
+                            {{-- Progress bar --}}
+                            <div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden mb-3">
+                                <div class="h-full bg-gradient-to-r from-primary-container to-secondary-container rounded-full" style="width: 60%"></div>
+                            </div>
+                            <div class="flex items-center justify-between mt-auto pt-2 border-t border-outline-variant/10">
+                                @if($task->deadline)
+                                <div class="flex items-center gap-1 text-label-sm {{ $task->deadline->isToday() ? 'text-dt-error' : 'text-outline' }}">
+                                    @if($task->deadline->isToday())
+                                        <span class="material-symbols-outlined text-[14px]">warning</span>
+                                        <span>Due Today</span>
+                                    @else
+                                        <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                                        <span>{{ $task->deadline->format('M d') }}</span>
+                                    @endif
+                                </div>
+                                @else
+                                    <div></div>
+                                @endif
+                                @if($task->user)
+                                    <div class="w-6 h-6 rounded-full bg-surface-container-high border border-dt-primary/50 flex items-center justify-center text-[10px] font-bold text-on-surface" title="{{ $task->user->name }}">
+                                        {{ strtoupper(substr($task->user->name, 0, 1)) }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+                @can('create', \App\Models\Task::class)
+                <a href="{{ route('tasks.create') }}?status=in_progress" class="flex items-center justify-center gap-1 p-3 border border-dashed border-outline-variant/30 rounded-xl text-on-surface-variant/50 hover:text-on-surface-variant hover:border-outline-variant/50 transition-colors text-body-md">
+                    <span class="material-symbols-outlined text-[18px]">add</span> Add Task
+                </a>
+                @endcan
+            </div>
+        </div>
+
+        {{-- DONE Column --}}
+        <div class="flex flex-col">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-[#4CAF50]"></div>
+                    <h3 class="text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">Done</h3>
+                    <span class="bg-surface-container-high text-on-surface-variant font-mono text-[11px] px-2 py-0.5 rounded-full">{{ $doneTasks->count() }}</span>
+                </div>
+                <button class="text-on-surface-variant hover:text-on-surface p-1 rounded transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">more_horiz</span>
+                </button>
+            </div>
+            <div class="space-y-3 min-h-[200px] opacity-70 hover:opacity-100 transition-opacity">
+                @foreach($doneTasks as $task)
+                    <a href="{{ route('tasks.show', $task) }}" class="glass-card rounded-xl p-4 block hover:border-outline-variant/60 transition-colors group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-mono text-code text-outline-variant line-through">DEV-{{ str_pad($task->id, 4, '0', STR_PAD_LEFT) }}</span>
+                            <div class="flex items-center gap-1 text-[#4CAF50] bg-[#4CAF50]/10 px-1.5 py-0.5 rounded text-[10px] font-mono border border-[#4CAF50]/20">
+                                <span class="material-symbols-outlined text-[12px]">check</span> Done
+                            </div>
+                        </div>
+                        <h4 class="text-body-md text-on-surface-variant mb-3 leading-snug">{{ $task->title }}</h4>
+                        <div class="flex items-center justify-between mt-auto pt-2 border-t border-outline-variant/10">
+                            @if($task->deadline)
+                            <div class="flex items-center gap-1 text-outline text-label-sm">
+                                <span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                <span>{{ $task->deadline->format('M d') }}</span>
+                            </div>
+                            @else
+                                <div></div>
+                            @endif
+                            @if($task->user)
+                                <div class="w-6 h-6 rounded-full bg-surface-container-high border border-surface-container-highest flex items-center justify-center text-[10px] font-bold text-on-surface-variant grayscale" title="{{ $task->user->name }}">
+                                    {{ strtoupper(substr($task->user->name, 0, 1)) }}
+                                </div>
+                            @endif
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    @if($tasks->isEmpty())
+    <div class="flex flex-col items-center justify-center py-20 text-center border border-dashed border-outline-variant/30 rounded-xl bg-surface-container-low/30 mt-4">
+        <div class="w-20 h-20 mb-6 rounded-full bg-surface-container flex items-center justify-center opacity-50">
+            <span class="material-symbols-outlined text-4xl text-on-surface-variant">task</span>
+        </div>
+        <h3 class="text-h2 text-on-surface font-semibold mb-2">No tasks found</h3>
+        <p class="text-body-md text-on-surface-variant max-w-md">Create your first task to start tracking your work.</p>
+    </div>
+    @endif
 </x-app-layout>

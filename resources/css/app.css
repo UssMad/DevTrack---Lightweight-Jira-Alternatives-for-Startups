@@ -1,3 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html { font-family: 'Geist', sans-serif; }
+}
+
+@layer components {
+    .glass-card {
+        background: rgba(30, 35, 45, 0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-panel {
+        background: rgba(30, 35, 45, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .btn-primary-gradient {
+        background: linear-gradient(135deg, #494bd6, #0566d9);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .btn-primary-gradient:hover {
+        opacity: 0.9;
+    }
+    .devtrack-input {
+        background-color: #0B0E14;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.2s ease;
+    }
+    .devtrack-input:focus {
+        border-color: #c0c1ff;
+        box-shadow: 0 0 0 1px #c0c1ff;
+        outline: none;
+    }
+    .mesh-bg {
+        background-image: radial-gradient(at 40% 20%, hsla(240,60%,15%,1) 0px, transparent 50%),
+                          radial-gradient(at 80% 0%, hsla(220,60%,15%,1) 0px, transparent 50%),
+                          radial-gradient(at 0% 50%, hsla(260,60%,10%,1) 0px, transparent 50%);
+    }
+    .sidebar-link {
+        @apply text-on-surface-variant px-4 py-2 flex items-center gap-3 rounded-lg transition-all duration-150;
+    }
+    .sidebar-link:hover {
+        @apply bg-surface-container-highest/40 text-on-surface;
+    }
+    .sidebar-link:active {
+        @apply translate-x-1;
+    }
+    .sidebar-link-active {
+        @apply bg-secondary-container/20 text-dt-primary border-r-2 border-dt-primary;
+    }
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #31353e; border-radius: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #464554; }
+
+/* Material Symbols */
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}

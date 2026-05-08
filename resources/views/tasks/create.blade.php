@@ -1,229 +1,108 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center gap-3">
-            <a href="{{ route('tasks.index') }}"
-               class="text-gray-400 hover:text-gray-600 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                </svg>
+    <div class="max-w-2xl mx-auto">
+        <div class="mb-8">
+            <a href="{{ route('tasks.index') }}" class="text-label-sm text-on-surface-variant hover:text-dt-primary transition-colors flex items-center gap-1 mb-4">
+                <span class="material-symbols-outlined text-[16px]">arrow_back</span> Back to Tasks
             </a>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                ✏️ {{ __('Create New Task') }}
-            </h2>
+            <h1 class="text-h1 text-on-surface font-bold">Create New Task</h1>
+            <p class="text-body-md text-on-surface-variant mt-1">Add a new task to one of your projects.</p>
         </div>
-    </x-slot>
 
-    <div class="py-10">
-        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="glass-panel rounded-xl p-6">
+            <form method="POST" action="{{ route('tasks.store') }}" class="space-y-5">
+                @csrf
 
-                {{-- Form Header --}}
-                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-6">
-                    <h3 class="text-white font-bold text-lg">Task Details</h3>
-                    <p class="text-indigo-100 text-sm mt-1">Fill in the information below to create a new task.</p>
+                <div class="flex flex-col gap-1">
+                    <label class="text-label-sm text-on-surface-variant" for="title">Task Title</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">task_alt</span>
+                        <input class="devtrack-input w-full rounded-lg pl-10 pr-4 py-2.5 text-body-md text-on-surface placeholder:text-outline/50"
+                               id="title" name="title" type="text" value="{{ old('title') }}" placeholder="e.g. Implement user authentication" required/>
+                    </div>
+                    <x-input-error :messages="$errors->get('title')" class="mt-1" />
                 </div>
 
-                <form method="POST" action="{{ route('tasks.store') }}" class="p-8 space-y-6" id="create-task-form">
-                    @csrf
+                <div class="flex flex-col gap-1">
+                    <label class="text-label-sm text-on-surface-variant" for="description">Description</label>
+                    <textarea class="devtrack-input w-full rounded-lg px-4 py-2.5 text-body-md text-on-surface placeholder:text-outline/50 min-h-[100px] resize-y"
+                              id="description" name="description" placeholder="Describe the task requirements...">{{ old('description') }}</textarea>
+                    <x-input-error :messages="$errors->get('description')" class="mt-1" />
+                </div>
 
-                    {{-- Validation Errors --}}
-                    @if($errors->any())
-                        <div class="p-4 bg-red-50 border border-red-200 rounded-xl">
-                            <p class="text-sm font-semibold text-red-700 mb-2">Please fix the following errors:</p>
-                            <ul class="list-disc list-inside space-y-1">
-                                @foreach($errors->all() as $error)
-                                    <li class="text-sm text-red-600">{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    {{-- Title --}}
-                    <div>
-                        <label for="title" class="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Task Title <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" name="title" id="title"
-                               value="{{ old('title') }}"
-                               placeholder="e.g. Implement login page"
-                               required
-                               class="w-full rounded-xl border-gray-200 shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500 @error('title') border-red-400 @enderror">
-                        @error('title')
-                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    {{-- Description --}}
-                    <div>
-                        <label for="description" class="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Description <span class="text-red-500">*</span>
-                        </label>
-                        <textarea name="description" id="description" rows="4"
-                                  placeholder="Describe what needs to be done..."
-                                  required
-                                  class="w-full rounded-xl border-gray-200 shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500 resize-none @error('description') border-red-400 @enderror">{{ old('description') }}</textarea>
-                        @error('description')
-                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    {{-- Project & Assignee --}}
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5"
-                         x-data="taskForm()"
-                         x-init="init()">
-
-                        {{-- Project --}}
-                        <div>
-                            <label for="project_id" class="block text-sm font-semibold text-gray-700 mb-1.5">
-                                Project <span class="text-red-500">*</span>
-                            </label>
-                            <select name="project_id" id="project_id"
-                                    required
-                                    x-on:change="onProjectChange($event)"
-                                    class="w-full rounded-xl border-gray-200 shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500 @error('project_id') border-red-400 @enderror">
-                                <option value="">— Select project —</option>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-label-sm text-on-surface-variant" for="project_id">Project</label>
+                        <div class="relative">
+                            <select class="devtrack-input w-full rounded-lg px-4 py-2.5 text-body-md text-on-surface appearance-none" id="project_id" name="project_id" required>
+                                <option value="">Select project...</option>
                                 @foreach($projects as $project)
-                                    <option value="{{ $project->id }}"
-                                            data-members="{{ $project->users->toJson() }}"
-                                            {{ old('project_id') == $project->id ? 'selected' : '' }}>
-                                        {{ $project->title }}
-                                    </option>
+                                    <option value="{{ $project->id }}" {{ (old('project_id') ?? request('project')) == $project->id ? 'selected' : '' }}>{{ $project->title }}</option>
                                 @endforeach
                             </select>
-                            @error('project_id')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                            @enderror
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
                         </div>
-
-                        {{-- Assignee --}}
-                        <div>
-                            <label for="user_id" class="block text-sm font-semibold text-gray-700 mb-1.5">
-                                Assign To
-                            </label>
-                            <select name="user_id" id="user_id"
-                                    x-bind:disabled="members.length === 0"
-                                    class="w-full rounded-xl border-gray-200 shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-400 @error('user_id') border-red-400 @enderror">
-                                <option value="">— Select member —</option>
-                                <template x-for="member in members" :key="member.id">
-                                    <option :value="member.id"
-                                            :selected="member.id == {{ old('user_id', 'null') }}"
-                                            x-text="member.name"></option>
-                                </template>
-                            </select>
-                            @error('user_id')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        <x-input-error :messages="$errors->get('project_id')" class="mt-1" />
                     </div>
 
-                    {{-- Priority & Deadline --}}
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-
-                        {{-- Priority --}}
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                Priority <span class="text-red-500">*</span>
-                            </label>
-                            <div class="flex gap-2">
-                                @foreach(['low' => ['label' => '🟢 Low', 'active' => 'border-green-500 bg-green-50 text-green-700'],
-                                          'medium' => ['label' => '🟡 Medium', 'active' => 'border-amber-500 bg-amber-50 text-amber-700'],
-                                          'high' => ['label' => '🔴 High', 'active' => 'border-red-500 bg-red-50 text-red-700']] as $value => $cfg)
-                                    <label class="flex-1 cursor-pointer">
-                                        <input type="radio" name="priority" value="{{ $value }}"
-                                               class="sr-only peer"
-                                               {{ old('priority', 'medium') === $value ? 'checked' : '' }}>
-                                        <span class="block text-center px-2 py-2.5 rounded-xl border-2 text-xs font-semibold
-                                                     border-gray-200 text-gray-500
-                                                     peer-checked:{{ $cfg['active'] }}
-                                                     hover:border-gray-300 transition-all duration-150">
-                                            {{ $cfg['label'] }}
-                                        </span>
-                                    </label>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-label-sm text-on-surface-variant" for="user_id">Assign To</label>
+                        <div class="relative">
+                            <select class="devtrack-input w-full rounded-lg px-4 py-2.5 text-body-md text-on-surface appearance-none" id="user_id" name="user_id">
+                                <option value="">Unassigned</option>
+                                @foreach($projects as $project)
+                                    @foreach($project->users as $user)
+                                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }} ({{ $project->title }})</option>
+                                    @endforeach
                                 @endforeach
-                            </div>
-                            @error('priority')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                            @enderror
+                            </select>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
                         </div>
+                        <x-input-error :messages="$errors->get('user_id')" class="mt-1" />
+                    </div>
+                </div>
 
-                        {{-- Deadline --}}
-                        <div>
-                            <label for="deadline" class="block text-sm font-semibold text-gray-700 mb-1.5">
-                                Deadline <span class="text-red-500">*</span>
-                            </label>
-                            <input type="date" name="deadline" id="deadline"
-                                   value="{{ old('deadline') }}"
-                                   required
-                                   min="{{ now()->toDateString() }}"
-                                   class="w-full rounded-xl border-gray-200 shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500 @error('deadline') border-red-400 @enderror">
-                            @error('deadline')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                            @enderror
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-label-sm text-on-surface-variant" for="status">Status</label>
+                        <div class="relative">
+                            <select class="devtrack-input w-full rounded-lg px-4 py-2.5 text-body-md text-on-surface appearance-none" id="status" name="status" required>
+                                <option value="todo" {{ old('status') === 'todo' ? 'selected' : '' }}>Todo</option>
+                                <option value="in_progress" {{ old('status') === 'in_progress' ? 'selected' : '' }}>In Progress</option>
+                                <option value="done" {{ old('status') === 'done' ? 'selected' : '' }}>Done</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
                         </div>
                     </div>
 
-                    {{-- Status --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            Initial Status <span class="text-red-500">*</span>
-                        </label>
-                        <div class="flex gap-3">
-                            @foreach(['todo' => '📋 To Do', 'in_progress' => '⚡ In Progress', 'done' => '✅ Done'] as $value => $label)
-                                <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="status" value="{{ $value }}"
-                                           class="sr-only peer"
-                                           {{ old('status', 'todo') === $value ? 'checked' : '' }}>
-                                    <span class="block text-center px-3 py-2.5 rounded-xl border-2 text-sm font-medium
-                                                 border-gray-200 text-gray-500
-                                                 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700
-                                                 hover:border-indigo-300 transition-all duration-150">
-                                        {{ $label }}
-                                    </span>
-                                </label>
-                            @endforeach
+                    <div class="flex flex-col gap-1">
+                        <label class="text-label-sm text-on-surface-variant" for="priority">Priority</label>
+                        <div class="relative">
+                            <select class="devtrack-input w-full rounded-lg px-4 py-2.5 text-body-md text-on-surface appearance-none" id="priority" name="priority" required>
+                                <option value="low" {{ old('priority') === 'low' ? 'selected' : '' }}>Low</option>
+                                <option value="medium" {{ old('priority', 'medium') === 'medium' ? 'selected' : '' }}>Medium</option>
+                                <option value="high" {{ old('priority') === 'high' ? 'selected' : '' }}>High</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
                         </div>
-                        @error('status')
-                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                        @enderror
                     </div>
 
-                    {{-- Actions --}}
-                    <div class="flex items-center justify-end gap-3 pt-2 border-t border-gray-100">
-                        <a href="{{ route('tasks.index') }}"
-                           class="px-5 py-2.5 text-sm font-semibold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition duration-150">
-                            Cancel
-                        </a>
-                        <button type="submit" id="submit-task-btn"
-                                class="px-6 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-xl shadow hover:bg-indigo-700 active:scale-95 transition-all duration-150">
-                            Create Task
-                        </button>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-label-sm text-on-surface-variant" for="deadline">Deadline</label>
+                        <input class="devtrack-input w-full rounded-lg px-4 py-2.5 text-body-md text-on-surface"
+                               id="deadline" name="deadline" type="date" value="{{ old('deadline') }}"/>
+                        <x-input-error :messages="$errors->get('deadline')" class="mt-1" />
                     </div>
-                </form>
-            </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant/10">
+                    <a href="{{ route('tasks.index') }}" class="px-4 py-2 rounded-lg text-label-sm text-on-surface-variant hover:bg-surface-variant/50 border border-transparent hover:border-outline-variant/30 transition-all">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn-primary-gradient text-white px-6 py-2 rounded-lg text-label-sm font-medium flex items-center gap-2 transition-opacity hover:opacity-90">
+                        <span class="material-symbols-outlined text-[18px]">add</span> Create Task
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-
-    <script>
-        function taskForm() {
-            return {
-                members: [],
-                projectsData: {},
-
-                init() {
-                    document.querySelectorAll('#project_id option[data-members]').forEach(opt => {
-                        try { this.projectsData[opt.value] = JSON.parse(opt.dataset.members); } catch(e) {}
-                    });
-                    const selectedId = document.getElementById('project_id').value;
-                    if (selectedId && this.projectsData[selectedId]) {
-                        this.members = this.projectsData[selectedId];
-                    }
-                },
-
-                onProjectChange(event) {
-                    const id = event.target.value;
-                    this.members = this.projectsData[id] ?? [];
-                }
-            }
-        }
-    </script>
 </x-app-layout>
