@@ -13,29 +13,37 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class ProjectController extends Controller
 {
      use AuthorizesRequests;
-    public function index(){
-    $this->authorize('viewAny',Project::class);
-    $projects=project::with('users','tasks')->get();
-    return view('projects.index',compact('projects'));
-    }
+   public function index()
+{
+    $this->authorize('viewAny', Project::class);
+
+    $projects = auth()->user()
+        ->projects()
+        ->with('users', 'tasks')
+        ->get();
+
+    return view('projects.index', compact('projects'));
+}
     public function create(){
         $this->authorize('create',Project::class);
         return view ('projects.create');
     }
-    public function store(StoreProjectRequest $request){
-        $this->authorize('create',Project::class);
-        $projets=Project::create($request->validate([
-            'title'=>'required',
-            'description'=>'nullable',
-            'deadline' => 'nullable|date',
-        ]));
-         $project->users()->attach(auth()->id(), [
-            'role' => 'lead'
-        ]);
-        return redirect()->route('projects.index');
+   public function store(StoreProjectRequest $request)
+{
+    $this->authorize('create', Project::class);
 
-    }
-    public function show (Project $project){
+    $project = Project::create([
+        'title' => $request->title,
+        'description' => $request->description,
+        'deadline' => $request->deadline,
+    ]);
+
+    $project->users()->attach(auth()->id(), [
+        'role' => 'lead'
+    ]);
+
+    return redirect()->route('projects.index');
+}    public function show (Project $project){
         $this->authorize('view',$project);
         return view ('projects.show',compact('project'));
 
