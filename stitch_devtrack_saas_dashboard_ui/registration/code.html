@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign Up - DevTrack</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#400071",
+                        "on-error-container": "#ffdad6",
+                        "background": "#0f131b",
+                        "on-error": "#690005",
+                        "primary-container": "#8083ff",
+                        "on-surface": "#dfe2ee",
+                        "surface-container-lowest": "#0a0e16",
+                        "on-primary": "#1000a9",
+                        "error-container": "#93000a",
+                        "outline-variant": "#464554",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "surface-container-high": "#262a32",
+                        "on-tertiary-fixed-variant": "#6900b3",
+                        "surface-container-low": "#181c24",
+                        "secondary-container": "#0566d9",
+                        "inverse-on-surface": "#2c3039",
+                        "outline": "#908fa0",
+                        "surface-variant": "#31353e",
+                        "on-secondary": "#002e6a",
+                        "primary-fixed": "#e1e0ff",
+                        "tertiary-fixed-dim": "#ddb7ff",
+                        "on-primary-container": "#0d0096",
+                        "surface-container-highest": "#31353e",
+                        "secondary": "#adc6ff",
+                        "surface-dim": "#0f131b",
+                        "tertiary-container": "#b76dff",
+                        "tertiary-fixed": "#f0dbff",
+                        "primary": "#c0c1ff",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-secondary-container": "#e6ecff",
+                        "surface-container": "#1c2028",
+                        "inverse-primary": "#494bd6",
+                        "on-tertiary": "#490080",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-surface-variant": "#c7c4d7",
+                        "inverse-surface": "#dfe2ee",
+                        "on-background": "#dfe2ee",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-tertiary-fixed": "#2c0051",
+                        "on-secondary-fixed": "#001a42",
+                        "surface": "#0f131b",
+                        "surface-tint": "#c0c1ff",
+                        "surface-bright": "#353942",
+                        "on-primary-fixed": "#07006c",
+                        "tertiary": "#ddb7ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "xs": "4px",
+                        "gutter": "20px",
+                        "lg": "24px",
+                        "xl": "48px",
+                        "margin": "32px",
+                        "sm": "8px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Geist"],
+                        "code": ["JetBrains Mono"],
+                        "body-lg": ["Geist"],
+                        "display": ["Geist"],
+                        "label-sm": ["Geist"],
+                        "h3": ["Geist"],
+                        "h1": ["Geist"],
+                        "body-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "h2": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "code": ["13px", { "lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "h3": ["18px", { "lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600" }],
+                        "h1": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        /* Custom Input Styles to match guidelines */
+        .devtrack-input {
+            background-color: #0B0E14;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
+        }
+        .devtrack-input:focus {
+            border-color: theme('colors.primary');
+            box-shadow: 0 0 0 1px theme('colors.primary');
+            outline: none;
+        }
+        /* Primary Button Gradient */
+        .btn-primary {
+            background: linear-gradient(135deg, theme('colors.inverse-primary'), theme('colors.secondary-container'));
+        }
+        /* Glass panel */
+        .glass-panel {
+            background: rgba(30, 35, 45, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex antialiased selection:bg-primary/30 selection:text-primary">
+<!-- Left Side: Illustration / Brand -->
+<div class="hidden lg:flex lg:w-1/2 relative bg-surface-container-lowest overflow-hidden">
+<!-- Abstract Tech Background Image -->
+<div class="absolute inset-0 z-0">
+<img alt="Abstract technology background" class="w-full h-full object-cover opacity-30 mix-blend-screen" data-alt="A sophisticated abstract technological visualization featuring glowing geometric networks and data streams in deep indigo and subtle cyan hues. The aesthetic is strictly dark mode, minimal, and high-performance, reminiscent of a futuristic IDE or server architecture. Soft ambient lighting highlights precision-engineered shapes, creating a sense of deep focus and flow state. The composition is sleek and utilitarian, perfectly embodying the DevTrack brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlnaU06Q9tX5PYJGn2Zej417bCoIem8CKqetpHmJ1m6LsQUppfWPYJtvVozV_SeRceFVijUNlwQ6SHDi0Vh4_mHfqX3XQBweyqPnfEGgDyBrBgGDeqDiwWrbld6chAYlb6k3Qv9L1uOyfJcQQAvA-WXeyoPC7ULVS2hF0ubmlJWxj-Htztg8QON6TvUiDCArsorYw_NZCWY4BCFe1_YwhO-QWuMxhdrmwhdCJZ56x0bd_ezdQrdoYW-EX4BEbuY75hUr-3uMIotlSS"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+</div>
+<div class="relative z-10 flex flex-col justify-between p-xl w-full h-full">
+<!-- Logo -->
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" data-icon="terminal">terminal</span>
+</div>
+<span class="font-h2 text-h2 font-bold tracking-tight text-primary">DevTrack</span>
+</div>
+<!-- Quote / Messaging -->
+<div class="max-w-md">
+<h1 class="font-display text-display mb-lg text-on-surface">Engineering the future.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                    Join the premier platform for high-performance developer workflows. Streamline your processes, collaborate with precision, and ship faster.
+                </p>
+<div class="mt-xl pt-lg border-t border-outline-variant/30 flex items-center gap-md">
+<div class="flex -space-x-4">
+<img alt="User avatar" class="w-10 h-10 rounded-full border-2 border-background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn3S6yADymXjvKMx8loOx3UtoPGzaUU-kTL2UDeh4WQgTV-_lM_b_joVgSoPkeWNOnBJQ_r9zsLDhBi9zWWNtxZ9WNUBc_8GV2FrtAmrSnkcTMKw6KyiLlKV77xv_Rw_96jJilq-71zmPQmBv52avOFX6d9hdXRzelOKVDcO-Uw9ZBvtoVm4IYuPUeRAIwLYYx7wVcXJKW_8R56adFRiEfgdQTu2VU5yTMBu5jooWyyMi-YUz9MVWTAJY0qwsp8cmau7c7ytyOyzr2"/>
+<img alt="User avatar" class="w-10 h-10 rounded-full border-2 border-background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjKUm8-EM8oPQPgl-E4nLmKBLX6C1b1pT8OCFqZTN28ifUFzJiJYF0_OWO0ifS8PdxrFAvz__N1Elfi2p8zYoEtdlJoG5OkXZlLnNFpkq-HoyxNzEryeCyyUY3MONmuwiRjmYGyGvwPsnjgDTJdrd0a8ZjQMbkF4z4MQePPKhH_smOhoPk0Fzzd8kRtFs2pktPRE4NAEffbnckyG09T1rirbGHsx8Lx6KnZ7sxf43NUYmE5zJPpIyNT9hEZJ5Vc8RA6gxpC4scMqKV"/>
+<img alt="User avatar" class="w-10 h-10 rounded-full border-2 border-background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZX_zeQyUcy_aiblaEtlbFhQU89y08vq8Z0X-J2HxDJoHWUY6z29L5mo3hDko1BrtDKGG3UJqbxhXwMVQPOBfftcqHLUXT2PoLDuX9kccWoiEKIekCMgJa4zkZF9OpkfycyjJHEudortITS0GGJLmN5kmQgNvZo50NAjulfD1Vo9-n2yP9mDrrRSyO-0PQNfyNqkXjHfnFWfm0U0df-g1B-qTU75zyaTg_CC-0ZLvSd0kH0C6tB5BhoVVWiDNxyAPuNMkM1YIqWccS"/>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">
+                        Trusted by 10,000+ engineering teams
+                    </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Registration Form -->
+<div class="w-full lg:w-1/2 flex items-center justify-center p-lg sm:p-xl bg-background relative">
+<!-- Subtle background glow -->
+<div class="absolute top-1/4 right-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="w-full max-w-[420px] relative z-10">
+<!-- Mobile Logo (hidden on lg) -->
+<div class="flex items-center gap-sm mb-xl lg:hidden justify-center">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" data-icon="terminal">terminal</span>
+</div>
+<span class="font-h2 text-h2 font-bold tracking-tight text-primary">DevTrack</span>
+</div>
+<div class="mb-lg">
+<h2 class="font-h1 text-h1 text-on-surface mb-xs">Create your account</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Enter your details to get started.</p>
+</div>
+<!-- The Form -->
+<div class="glass-panel rounded-xl p-lg sm:p-lg">
+<form class="flex flex-col gap-md">
+<!-- Full Name -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant" for="fullName">Full Name</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline text-[20px]" data-icon="person">person</span>
+<input class="devtrack-input w-full rounded pl-xl pr-md py-sm font-body-md text-body-md text-on-surface placeholder:text-outline/50" id="fullName" placeholder="Jane Doe" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant" for="email">Email</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline text-[20px]" data-icon="mail">mail</span>
+<input class="devtrack-input w-full rounded pl-xl pr-md py-sm font-code text-code text-on-surface placeholder:text-outline/50" id="email" placeholder="jane.doe@example.com" type="email"/>
+</div>
+</div>
+<!-- Password -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant" for="password">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline text-[20px]" data-icon="lock">lock</span>
+<input class="devtrack-input w-full rounded pl-xl pr-md py-sm font-code text-code text-on-surface placeholder:text-outline/50" id="password" placeholder="••••••••" type="password"/>
+</div>
+<p class="font-label-sm text-label-sm text-outline mt-xs">Must be at least 8 characters.</p>
+</div>
+<!-- Submit Button -->
+<button class="btn-primary mt-sm w-full rounded font-label-sm text-label-sm text-white py-[10px] flex items-center justify-center gap-xs hover:opacity-90 transition-opacity active:scale-[0.98]" type="button">
+                        Sign Up
+                        <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<div class="relative flex items-center py-sm">
+<div class="flex-grow border-t border-outline-variant/30"></div>
+<span class="flex-shrink-0 mx-sm font-label-sm text-label-sm text-outline">or</span>
+<div class="flex-grow border-t border-outline-variant/30"></div>
+</div>
+<!-- SSO Options -->
+<button class="w-full rounded border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-colors py-[10px] flex items-center justify-center gap-sm font-label-sm text-label-sm text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="code">code</span>
+                        Continue with GitHub
+                    </button>
+<button class="w-full rounded border border-outline-variant/30 bg-surface-container-low hover:bg-surface-container-high transition-colors py-[10px] flex items-center justify-center gap-sm font-label-sm text-label-sm text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="mail">mail</span>
+                        Continue with Google
+                    </button>
+</form>
+</div>
+<!-- Footer Link -->
+<p class="text-center mt-lg font-body-md text-body-md text-on-surface-variant">
+                Already have an account? 
+                <a class="text-primary hover:text-primary-fixed transition-colors font-medium" href="#">Sign in</a>
+</p>
+<p class="text-center mt-xl font-code text-[11px] text-outline/50">
+                By signing up, you agree to our Terms of Service and Privacy Policy.
+            </p>
+</div>
+</div>
+</body></html>

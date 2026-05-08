@@ -85,6 +85,14 @@ class ProjectController extends Controller
 
         return redirect()->route('projects.index');
     }
+
+    public function forceDelete($id)
+    {
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $this->authorize('forceDelete', $project);
+        $project->forceDelete();
+        return redirect()->route('projects.archives')->with('success', 'Project permanently deleted.');
+    }
     public function addMember(AddMemberRequest $request ,Project $project){
          $this->authorize('update', $project);
 

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DevTrack - Login</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#908fa0",
+                    "on-secondary-container": "#e6ecff",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-primary-fixed": "#07006c",
+                    "surface-container-highest": "#31353e",
+                    "on-secondary": "#002e6a",
+                    "secondary-container": "#0566d9",
+                    "on-tertiary-fixed-variant": "#6900b3",
+                    "surface-dim": "#0f131b",
+                    "primary-fixed": "#e1e0ff",
+                    "surface-container-high": "#262a32",
+                    "error": "#ffb4ab",
+                    "surface-variant": "#31353e",
+                    "surface": "#0f131b",
+                    "on-error-container": "#ffdad6",
+                    "primary": "#c0c1ff",
+                    "tertiary-fixed-dim": "#ddb7ff",
+                    "secondary": "#adc6ff",
+                    "primary-container": "#8083ff",
+                    "on-error": "#690005",
+                    "outline-variant": "#464554",
+                    "surface-tint": "#c0c1ff",
+                    "secondary-fixed": "#d8e2ff",
+                    "secondary-fixed-dim": "#adc6ff",
+                    "on-primary-container": "#0d0096",
+                    "inverse-surface": "#dfe2ee",
+                    "tertiary": "#ddb7ff",
+                    "on-tertiary-container": "#400071",
+                    "on-surface-variant": "#c7c4d7",
+                    "surface-container": "#1c2028",
+                    "on-tertiary-fixed": "#2c0051",
+                    "on-surface": "#dfe2ee",
+                    "tertiary-container": "#b76dff",
+                    "inverse-primary": "#494bd6",
+                    "on-secondary-fixed": "#001a42",
+                    "on-primary": "#1000a9",
+                    "on-background": "#dfe2ee",
+                    "on-tertiary": "#490080",
+                    "background": "#0f131b",
+                    "surface-bright": "#353942",
+                    "on-secondary-fixed-variant": "#004395",
+                    "error-container": "#93000a",
+                    "surface-container-lowest": "#0a0e16",
+                    "inverse-on-surface": "#2c3039",
+                    "tertiary-fixed": "#f0dbff",
+                    "surface-container-low": "#181c24",
+                    "on-primary-fixed-variant": "#2f2ebe"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "margin": "32px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "xl": "48px",
+                    "gutter": "20px",
+                    "md": "16px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "h3": ["Geist", "sans-serif"],
+                    "label-sm": ["Geist", "sans-serif"],
+                    "display": ["Geist", "sans-serif"],
+                    "h1": ["Geist", "sans-serif"],
+                    "h2": ["Geist", "sans-serif"],
+                    "code": ["JetBrains Mono", "monospace"],
+                    "body-lg": ["Geist", "sans-serif"],
+                    "body-md": ["Geist", "sans-serif"]
+            },
+            "fontSize": {
+                    "h3": ["18px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "code": ["13px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        /* Custom styles to handle specific tokens not perfectly mapped by Tailwind config out of the box */
+        body { font-family: 'Geist', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-background min-h-screen flex overflow-hidden antialiased">
+<!-- Left Side: Illustration / Visual Anchor -->
+<div class="hidden lg:flex lg:w-1/2 relative bg-surface-dim items-center justify-center overflow-hidden border-r border-outline-variant/10">
+<!-- Generative Artwork -->
+<img alt="Cybernetic network" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-luminosity" data-alt="A sophisticated abstract 3D rendering representing a high-performance digital network and code infrastructure. Glowing, highly detailed cyan and indigo data streams flow through a complex, dark architectural grid. The lighting is dramatic and moody, utilizing a deep #0B0E14 background aesthetic with sharp, glassmorphic floating elements. The overall mood is hyper-technical, secure, and visually striking, fitting for an advanced developer platform login screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjdf9eOJKxhjpT0DvM8n740-Vum_5uSHx6FQFXOgiSHHJFko4cuy4aVTLWBvWlz7O1YAUstleWEL4aZ_VkE_7MwjE7CULXFEskEXluv7Fab6PWpvEHSoZ6adKHPGN6Wu-6-FEzbVD-xejd7WmXqVL4xtOCLhTWA9Z6M83WGS-_EvCdPSlrvhL3IEyZl71MzRbqVI8ctvdORR4OoSPnXTdJLdNIRVh8XFqTCLHOJwsz_cErO355wV43_bwYoVNusLBhtL7LDBRaEMOQ"/>
+<!-- Gradient Overlay to blend and soften -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/80 to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-transparent to-surface-container-lowest/90"></div>
+<!-- Optional Subtle Branding/Quote overlay on image -->
+<div class="relative z-10 p-xl max-w-lg mt-auto mb-xl mr-auto ml-xl border border-outline-variant/20 bg-surface-container/30 backdrop-blur-xl rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+<p class="font-h3 text-h3 text-on-surface mb-sm">"Engineering the future requires tools that get out of the way."</p>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="bolt">bolt</span>
+                High-performance workflow
+            </p>
+</div>
+</div>
+<!-- Right Side: Login Form Canvas -->
+<div class="w-full lg:w-1/2 flex items-center justify-center p-lg sm:p-xl relative z-10 bg-surface-container-lowest">
+<!-- Form Container -->
+<div class="w-full max-w-[420px] flex flex-col gap-lg">
+<!-- Header Section -->
+<div class="flex flex-col gap-xs mb-md">
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-10 h-10 rounded-lg bg-gradient-to-br from-inverse-primary to-secondary-container flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-white" data-icon="terminal">terminal</span>
+</div>
+<span class="font-h2 text-h2 font-bold tracking-tight text-on-surface">DevTrack</span>
+</div>
+<h1 class="font-h1 text-h1 text-on-surface">Welcome back</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Enter your credentials to access your workspace.</p>
+</div>
+<!-- Form -->
+<form action="#" class="flex flex-col gap-md" method="POST">
+<!-- Email Field -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant" for="email">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline-variant text-[20px]" data-icon="mail">mail</span>
+<input class="w-full bg-surface border border-outline-variant/30 text-on-surface rounded-lg pl-[44px] pr-md py-[10px] font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-outline-variant/50" id="email" name="email" placeholder="developer@company.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between items-center">
+<label class="font-label-sm text-label-sm text-on-surface-variant" for="password">Password</label>
+<a class="font-label-sm text-label-sm text-primary hover:text-primary-fixed-dim transition-colors" href="#">Forgot password?</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline-variant text-[20px]" data-icon="lock">lock</span>
+<input class="w-full bg-surface border border-outline-variant/30 text-on-surface rounded-lg pl-[44px] pr-md py-[10px] font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-outline-variant/50 font-code" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<!-- Remember Me (Optional structural addition for standard login flow) -->
+<div class="flex items-center gap-sm mt-xs mb-sm">
+<input class="w-4 h-4 rounded-[4px] bg-surface border-outline-variant/30 text-inverse-primary focus:ring-inverse-primary focus:ring-offset-surface-container-lowest" id="remember" type="checkbox"/>
+<label class="font-body-md text-body-md text-on-surface-variant cursor-pointer" for="remember">Remember me for 30 days</label>
+</div>
+<!-- Submit Button -->
+<button class="w-full flex items-center justify-center gap-sm bg-gradient-to-r from-inverse-primary to-secondary-container hover:from-primary hover:to-secondary-fixed text-white font-body-md text-body-md font-semibold py-[12px] rounded-lg transition-all shadow-[0_0_20px_rgba(73,75,214,0.2)] hover:shadow-[0_0_25px_rgba(73,75,214,0.4)]" type="submit">
+                    Sign In
+                    <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+<!-- Footer Links -->
+<div class="mt-lg text-center border-t border-outline-variant/10 pt-lg">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Don't have an account? 
+                    <a class="text-primary hover:text-primary-fixed-dim font-semibold transition-colors" href="#">Request Access</a>
+</p>
+</div>
+</div>
+</div>
+</body></html>
